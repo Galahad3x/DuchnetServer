@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-sources>
+      <data-source id="3eb94dbd-bea9-4aa8-a6da-d8e18b7faf8b" name="DuchnetServer" url="jdbc:postgresql://localhost:5432/duchnet" driverClass="org.postgresql.Driver" />
+    </data-sources>
+  </component>
+</project>
