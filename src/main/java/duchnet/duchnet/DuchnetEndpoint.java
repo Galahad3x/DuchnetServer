@@ -2,9 +2,10 @@ package duchnet.duchnet;
 
 import duchnet.duchnet.models.Description;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,14 +15,14 @@ public class DuchnetEndpoint {
     @Autowired
     DuchnetService duchnetService;
 
-    @GetMapping("/")
-    public List<Description> hello(){
+    @GetMapping(value = "/", produces = {MediaType.TEXT_XML_VALUE})
+    public List<Description> hello() {
         return duchnetService.findAllDescriptions();
     }
 
-    @GetMapping("/post")
-    public String postDescription(){
-        duchnetService.postDescription();
+    @PostMapping("/")
+    public String postDescription(@PathVariable("hash") String hash, @RequestBody String description) {
+        duchnetService.postDescription(hash, description);
         return "Description posted";
     }
 }
