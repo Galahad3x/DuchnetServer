@@ -21,4 +21,12 @@ public class DuchnetService {
     public List<Description> findAllFilenames(){
         return filenameRepository.findAll();
     }
+
+    public List<Description> findAllDescriptions(){
+        return descriptionRepository.findAll();
+    }
+
+    public void postDescription(){
+        descriptionRepository.save(new Description("1", "Episode 1"));
+    }
 }

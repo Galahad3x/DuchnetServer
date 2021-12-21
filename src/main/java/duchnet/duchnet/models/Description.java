@@ -10,6 +10,14 @@ public class Description {
     private String hash;
     private String description;
 
+    public Description() {
+    }
+
+    public Description(String hash, String description){
+        this.hash = hash;
+        this.description = description;
+    }
+
     public String getHash() {
         return hash;
     }
