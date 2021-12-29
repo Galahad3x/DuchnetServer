@@ -18,10 +18,7 @@ public class Content {
         this.hash = hash;
     }
 
-    @OneToMany(mappedBy = "filename", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<FileName> filenames;
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Description> descriptions;
-    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Tag> tags;
+    public Long getId() {
+        return id;
+    }
 }

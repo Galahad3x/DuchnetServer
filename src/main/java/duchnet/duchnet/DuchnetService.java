@@ -32,14 +32,18 @@ public class DuchnetService {
         return descriptionRepository.findAll();
     }
 
+    public Optional<Content> findContentById(Long id){
+        return contentRepository.findById(id);
+    }
+
     public void postDescription(String hash, String description) {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
-            descriptionRepository.save(new Description(optional.get(), description));
+            descriptionRepository.save(new Description(optional.get().getId(), description));
         } else {
             Content daContent = new Content(hash);
             contentRepository.save(daContent);
-            descriptionRepository.save(new Description(daContent, description));
+            descriptionRepository.save(new Description(daContent.getId(), description));
         }
     }
 }

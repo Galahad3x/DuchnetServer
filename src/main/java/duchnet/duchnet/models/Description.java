@@ -9,16 +9,19 @@ public class Description {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "content_hash", nullable = false)
-    public Content content;
+    private Long content_id;
+
+    public Long getContent_id() {
+        return content_id;
+    }
+
     private String description;
 
     public Description() {
     }
 
-    public Description(Content content, String description){
-        this.content = content;
+    public Description(Long content_id, String description){
+        this.content_id = content_id;
         this.description = description;
     }
 
