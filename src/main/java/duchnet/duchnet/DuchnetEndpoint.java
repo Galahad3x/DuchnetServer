@@ -20,7 +20,7 @@ public class DuchnetEndpoint {
     DuchnetService duchnetService;
 
     @GetMapping(value = "/", produces = {"text/plain"})
-    public String hello() throws JsonProcessingException {
+    public ResponseEntity<String> hello() throws JsonProcessingException {
         List<Description> descriptions = duchnetService.findAllDescriptions();
         List<DescriptionXML> descriptionReturns = new LinkedList<>();
         for (Description desc : descriptions) {
@@ -39,7 +39,7 @@ public class DuchnetEndpoint {
                 }
             }
         }
-        return new XmlMapper().writeValueAsString(descriptionReturns);
+        return new ResponseEntity<>(new XmlMapper().writeValueAsString(descriptionReturns), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/hash/{hash}", consumes = {"text/plain"})
