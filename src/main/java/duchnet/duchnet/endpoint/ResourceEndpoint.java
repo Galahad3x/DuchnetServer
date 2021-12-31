@@ -26,17 +26,17 @@ public class ResourceEndpoint {
     @Autowired
     private DuchnetService duchnetService;
 
-    @GetMapping("/")
+    @GetMapping("/v1/resources/")
     public ResponseEntity<String> getEverything() throws JsonProcessingException {
         return new EverythingEndpoint().getEverything();
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/v1/resources/")
     public ResponseEntity<String> deleteEverything() {
         return new EverythingEndpoint().deleteEverything();
     }
 
-    @GetMapping("/{resource}")
+    @GetMapping("/v1/resources/{resource}")
     public ResponseEntity<String> getResource(@PathVariable("resource") String resource) throws JsonProcessingException {
         switch (resource) {
             case "filenames": {
@@ -79,7 +79,7 @@ public class ResourceEndpoint {
         return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @DeleteMapping("/{resource}")
+    @DeleteMapping("/v1/resources/{resource}")
     public ResponseEntity<String> deleteResource(@PathVariable("resource") String resource){
         switch (resource) {
             case "filenames": {
