@@ -1,7 +1,8 @@
-package duchnet.duchnet;
+package duchnet.duchnet.endpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import duchnet.duchnet.DuchnetService;
 import duchnet.duchnet.common.DescriptionXML;
 import duchnet.duchnet.models.Content;
 import duchnet.duchnet.models.Description;
@@ -19,6 +20,12 @@ public class DuchnetEndpoint {
     @Autowired
     DuchnetService duchnetService;
 
+    @GetMapping("/error")
+    public ResponseEntity<String> error(){
+        return new ResponseEntity<>("Something went wrong", HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    /*
     @GetMapping(value = "/", produces = {"text/plain"})
     public ResponseEntity<String> hello() throws JsonProcessingException {
         List<Description> descriptions = duchnetService.findAllDescriptions();
@@ -29,7 +36,7 @@ public class DuchnetEndpoint {
                 boolean found = false;
                 for (DescriptionXML descXML : descriptionReturns) {
                     if (descXML.hash.equals(daContent.get().hash)) {
-                        descXML.descriptions.add(desc.getDescription());
+                        descXML.description.add(desc.getDescription());
                         found = true;
                         break;
                     }
@@ -48,4 +55,5 @@ public class DuchnetEndpoint {
         duchnetService.postDescription(hash, description);
         return "Description posted";
     }
+     */
 }

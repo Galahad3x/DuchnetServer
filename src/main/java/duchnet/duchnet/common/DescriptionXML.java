@@ -2,12 +2,15 @@ package duchnet.duchnet.common;
 
 import java.util.List;
 
+/**
+ * Used to represent data in XML format
+ */
 public class DescriptionXML {
     public String hash;
-    public List<String> descriptions;
+    public List<String> description;
 
     public DescriptionXML(String hash, List<String> descriptions) {
         this.hash = hash;
-        this.descriptions = descriptions;
+        this.description = descriptions;
     }
 }

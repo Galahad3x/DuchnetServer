@@ -1,24 +1,32 @@
 package duchnet.duchnet.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class FileName {
+
     @Id
-    private String hash;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long content_id;
+
+    public Long getContent_id() {
+        return content_id;
+    }
+
     private String filename;
 
-    public String getHash() {
-        return hash;
+    public FileName() {
+    }
+
+    public FileName(Long content_id, String filename){
+        this.content_id = content_id;
+        this.filename = filename;
     }
 
     public String getFilename() {
         return filename;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
     }
 
     public void setFilename(String filename) {
