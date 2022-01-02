@@ -33,8 +33,19 @@ public class DuchnetService {
         return contentRepository.findById(id);
     }
 
+    public Optional<Content> findContentByHash(String hash) {
+        return contentRepository.findByHashEquals(hash);
+    }
+
     public void deleteAllContents() {
         contentRepository.deleteAll();
+    }
+
+    public void deleteContent(Long id) {
+        this.deleteFilenamesByContentId(id);
+        this.deleteDescriptionsByContentId(id);
+        this.deleteTagsByContentId(id);
+        contentRepository.deleteById(id);
     }
 
 
@@ -52,6 +63,10 @@ public class DuchnetService {
 
     public Optional<FileName> findFilenameById(Long id) {
         return filenameRepository.findById(id);
+    }
+
+    public void deleteFilenamesByContentId(Long content_id) {
+        filenameRepository.deleteByContentId(content_id);
     }
 
 
@@ -82,6 +97,10 @@ public class DuchnetService {
         }
     }
 
+    public void deleteDescriptionsByContentId(Long content_id) {
+        descriptionRepository.deleteByContentId(content_id);
+    }
+
 
     public List<Tag> findAllTags() {
         return tagRepository.findAll();
@@ -97,5 +116,9 @@ public class DuchnetService {
 
     public Optional<Tag> findTagById(Long id) {
         return tagRepository.findById(id);
+    }
+
+    public void deleteTagsByContentId(Long content_id) {
+        tagRepository.deleteByContentId(content_id);
     }
 }
