@@ -3,7 +3,6 @@ package duchnet.duchnet.endpoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import duchnet.duchnet.DuchnetService;
-import duchnet.duchnet.common.ContentXML;
 import duchnet.duchnet.common.DescriptionXML;
 import duchnet.duchnet.models.Content;
 import duchnet.duchnet.models.Description;
@@ -20,22 +19,40 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Endpoint that maps everything related to resources
+ */
 @RestController("/v1/resources")
 public class ResourceEndpoint {
 
     @Autowired
     private DuchnetService duchnetService;
 
+    /**
+     * Get everything from the database
+     * @return ResponseEntity with a string representing a List of ContentXMLs in XML and a status code
+     * @throws JsonProcessingException If xmlMapper fails
+     */
     @GetMapping("/v1/resources/")
     public ResponseEntity<String> getEverything() throws JsonProcessingException {
         return new EverythingEndpoint().getEverything();
     }
 
+    /**
+     * Delete everything
+     * @return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
+     */
     @DeleteMapping("/v1/resources/")
     public ResponseEntity<String> deleteEverything() {
         return new EverythingEndpoint().deleteEverything();
     }
 
+    /**
+     * Get all the resources of a specific type
+     * @param resource The resource type
+     * @return ResponseEntity with a string with the List of ResourceXMLs in XML and a status code
+     * @throws JsonProcessingException If xmlMapper fails
+     */
     @GetMapping("/v1/resources/{resource}")
     public ResponseEntity<String> getResource(@PathVariable("resource") String resource) throws JsonProcessingException {
         switch (resource) {
@@ -79,6 +96,11 @@ public class ResourceEndpoint {
         return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
+    /**
+     * Get all the resources of a specific type
+     * @param resource The resource type
+     * @return ResponseEntity with a string and a status code
+     */
     @DeleteMapping("/v1/resources/{resource}")
     public ResponseEntity<String> deleteResource(@PathVariable("resource") String resource){
         switch (resource) {

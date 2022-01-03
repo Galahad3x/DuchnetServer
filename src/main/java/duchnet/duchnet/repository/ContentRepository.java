@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository to access contents
+ */
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
     Optional<Content> findByHashEquals(String hash);

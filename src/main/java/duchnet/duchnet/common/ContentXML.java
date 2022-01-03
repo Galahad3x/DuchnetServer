@@ -1,10 +1,5 @@
 package duchnet.duchnet.common;
 
-import duchnet.duchnet.models.Description;
-import duchnet.duchnet.models.FileName;
-import duchnet.duchnet.models.Tag;
-
-import java.util.LinkedList;
 import java.util.List;
 
 /**

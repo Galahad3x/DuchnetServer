@@ -1,8 +1,10 @@
 package duchnet.duchnet.models;
 
 import javax.persistence.*;
-import java.util.List;
 
+/**
+ * Class to represent a content in the database
+ */
 @Entity
 public class Content {
 

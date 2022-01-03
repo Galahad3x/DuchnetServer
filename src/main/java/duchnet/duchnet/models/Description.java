@@ -11,10 +11,6 @@ public class Description {
 
     private Long content_id;
 
-    public Long getContent_id() {
-        return content_id;
-    }
-
     private String description;
 
     public Description() {
@@ -31,5 +27,9 @@ public class Description {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getContent_id() {
+        return content_id;
     }
 }

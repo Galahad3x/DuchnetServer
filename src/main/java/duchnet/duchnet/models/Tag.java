@@ -2,6 +2,9 @@ package duchnet.duchnet.models;
 
 import javax.persistence.*;
 
+/**
+ * Class to represent a tag in the database
+ */
 @Entity
 public class Tag {
 
@@ -27,9 +30,5 @@ public class Tag {
 
     public String getTag() {
         return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 }

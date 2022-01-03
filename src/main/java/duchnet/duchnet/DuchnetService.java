@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Manage the calling of the repositories
+ */
 @Component
 public class DuchnetService {
     @Autowired
@@ -57,12 +60,23 @@ public class DuchnetService {
         return filenameRepository.findByContentIdEquals(content_id);
     }
 
-    public void deleteAllFilenames() {
-        filenameRepository.deleteAll();
-    }
-
     public Optional<FileName> findFilenameById(Long id) {
         return filenameRepository.findById(id);
+    }
+
+    public void postFilename(String hash, String name) {
+        Optional<Content> optional = contentRepository.findByHashEquals(hash);
+        if (optional.isPresent()) {
+            filenameRepository.save(new FileName(optional.get().getId(), name));
+        } else {
+            Content daContent = new Content(hash);
+            contentRepository.save(daContent);
+            filenameRepository.save(new FileName(daContent.getId(), name));
+        }
+    }
+
+    public void deleteAllFilenames() {
+        filenameRepository.deleteAll();
     }
 
     public void deleteFilenamesByContentId(Long content_id) {
@@ -76,10 +90,6 @@ public class DuchnetService {
 
     public List<Description> findAllDescriptions(Long content_id) {
         return descriptionRepository.findByContentIdEquals(content_id);
-    }
-
-    public void deleteAllDescriptions() {
-        descriptionRepository.deleteAll();
     }
 
     public Optional<Description> findDescriptionById(Long id) {
@@ -97,6 +107,10 @@ public class DuchnetService {
         }
     }
 
+    public void deleteAllDescriptions() {
+        descriptionRepository.deleteAll();
+    }
+
     public void deleteDescriptionsByContentId(Long content_id) {
         descriptionRepository.deleteByContentId(content_id);
     }
@@ -110,12 +124,23 @@ public class DuchnetService {
         return tagRepository.findByContentIdEquals(content_id);
     }
 
-    public void deleteAllTags() {
-        tagRepository.deleteAll();
-    }
-
     public Optional<Tag> findTagById(Long id) {
         return tagRepository.findById(id);
+    }
+
+    public void postTag(String hash, String tag) {
+        Optional<Content> optional = contentRepository.findByHashEquals(hash);
+        if (optional.isPresent()) {
+            tagRepository.save(new Tag(optional.get().getId(), tag));
+        } else {
+            Content daContent = new Content(hash);
+            contentRepository.save(daContent);
+            tagRepository.save(new Tag(daContent.getId(), tag));
+        }
+    }
+
+    public void deleteAllTags() {
+        tagRepository.deleteAll();
     }
 
     public void deleteTagsByContentId(Long content_id) {

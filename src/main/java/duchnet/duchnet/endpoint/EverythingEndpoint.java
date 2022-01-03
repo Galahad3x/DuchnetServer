@@ -18,12 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Endpoint to map the base URLs, which get or delete everything
+ */
 @RestController("/v1")
 public class EverythingEndpoint {
 
     @Autowired
     private DuchnetService duchnetService;
 
+    /**
+     * Get everything from the database
+     * @return ResponseEntity with a string representing a List of ContentXMLs in XML and a status code
+     * @throws JsonProcessingException If xmlMapper fails
+     */
     @GetMapping("/v1/")
     public ResponseEntity<String> getEverything() throws JsonProcessingException {
         List<Content> contents = duchnetService.findAllContents();
@@ -46,6 +54,10 @@ public class EverythingEndpoint {
         return new ResponseEntity<>(new XmlMapper().writeValueAsString(contentXMLS), HttpStatus.OK);
     }
 
+    /**
+     * Delete everything
+     * @return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
+     */
     @DeleteMapping("/v1/")
     public ResponseEntity<String> deleteEverything(){
         duchnetService.deleteAllContents();

@@ -2,6 +2,9 @@ package duchnet.duchnet.models;
 
 import javax.persistence.*;
 
+/**
+ * Class to represent a filename in the database
+ */
 @Entity
 public class FileName {
 
@@ -27,9 +30,5 @@ public class FileName {
 
     public String getFilename() {
         return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
     }
 }

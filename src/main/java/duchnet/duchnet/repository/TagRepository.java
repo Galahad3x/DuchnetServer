@@ -10,10 +10,19 @@ import java.util.List;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
+    /**
+     * Find all the tags of a concrete hash
+     * @param content_id The id of this hash in the database
+     * @return A list of all the tags matching the pattern
+     */
     @Query("select t from Tag t where t.content_id = ?1")
     List<Tag> findByContentIdEquals(Long content_id);
 
+    /**
+     * Delete all the tags of a concrete hash
+     * @param content_id The id of this hash in the database
+     */
     @Modifying
     @Query("delete from Tag t where t.content_id = ?1")
-    int deleteByContentId(Long content_id);
+    void deleteByContentId(Long content_id);
 }
