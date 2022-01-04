@@ -31,4 +31,8 @@ public class Tag {
     public String getTag() {
         return tag;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

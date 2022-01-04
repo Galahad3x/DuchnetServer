@@ -31,4 +31,8 @@ public class FileName {
     public String getFilename() {
         return filename;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

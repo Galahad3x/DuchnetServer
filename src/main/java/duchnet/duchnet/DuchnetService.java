@@ -83,6 +83,8 @@ public class DuchnetService {
         filenameRepository.deleteAll();
     }
 
+    public void deleteFilenameById(Long id) {filenameRepository.deleteById(id);}
+
     public void deleteFilenamesByContentId(Long content_id) {
         filenameRepository.deleteByContentId(content_id);
     }
@@ -119,6 +121,8 @@ public class DuchnetService {
         descriptionRepository.deleteAll();
     }
 
+    public void deleteDescriptionById(Long id) {descriptionRepository.deleteById(id);}
+
     public void deleteDescriptionsByContentId(Long content_id) {
         descriptionRepository.deleteByContentId(content_id);
     }
@@ -154,6 +158,8 @@ public class DuchnetService {
     public void deleteAllTags() {
         tagRepository.deleteAll();
     }
+
+    public void deleteTagById(Long id) {tagRepository.deleteById(id);}
 
     public void deleteTagsByContentId(Long content_id) {
         tagRepository.deleteByContentId(content_id);

@@ -32,4 +32,8 @@ public class Description {
     public Long getContent_id() {
         return content_id;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
