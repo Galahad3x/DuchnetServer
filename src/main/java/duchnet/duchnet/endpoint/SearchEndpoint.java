@@ -101,6 +101,21 @@ public class SearchEndpoint {
             default:
                 return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
         }
+        for (ContentXML xml : XMLs) {
+            Optional<Content> content_op = duchnetService.findContentByHash(xml.hash);
+            if (content_op.isPresent()) {
+                Content content = content_op.get();
+                for (FileName name : duchnetService.findAllFilenames(content.getId())){
+                    xml.filename.add(name.getFilename());
+                }
+                for (Description desc : duchnetService.findAllDescriptions(content.getId())){
+                    xml.description.add(desc.getDescription());
+                }
+                for (Tag tg : duchnetService.findAllTags(content.getId())){
+                    xml.tag.add(tg.getTag());
+                }
+            }
+        }
         return new ResponseEntity<>(new XmlMapper().writeValueAsString(XMLs), HttpStatus.OK);
     }
 }
