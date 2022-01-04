@@ -14,6 +14,14 @@ import java.util.List;
 @Repository
 public interface DescriptionRepository extends JpaRepository<Description, Long> {
     /**
+     * Find all the descriptions that contain the text
+     * @param description the text to look for inside the description
+     * @return A list of descriptions
+     */
+    @Query("select d from Description d where upper(d.description) like upper(concat('%', ?1, '%'))")
+    List<Description> findByDescriptionContains(String description);
+
+    /**
      * Find all the descriptions of a concrete hash
      * @param content_id The id of this hash in the database
      * @return A list of all the descriptions matching the pattern

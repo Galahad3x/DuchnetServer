@@ -11,6 +11,14 @@ import java.util.List;
 @Repository
 public interface FilenameRepository extends JpaRepository<FileName, Long> {
     /**
+     * Find all the filenames that contain the text
+     * @param filename The filename
+     * @return List of FileNames
+     */
+    @Query("select f from FileName f where upper(f.filename) like upper(concat('%', ?1, '%'))")
+    List<FileName> findByFilenameContains(String filename);
+
+    /**
      * Find all the filenames of a concrete hash
      * @param content_id The id of this hash in the database
      * @return A list of all the filenames matching the pattern

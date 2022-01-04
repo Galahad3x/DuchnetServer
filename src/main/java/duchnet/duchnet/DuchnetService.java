@@ -64,6 +64,10 @@ public class DuchnetService {
         return filenameRepository.findById(id);
     }
 
+    public List<FileName> findFilenamesByText(String text){
+        return filenameRepository.findByFilenameContains(text);
+    }
+
     public void postFilename(String hash, String name) {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
@@ -96,6 +100,10 @@ public class DuchnetService {
         return descriptionRepository.findById(id);
     }
 
+    public List<Description> findDescriptionsByText(String text) {
+        return descriptionRepository.findByDescriptionContains(text);
+    }
+
     public void postDescription(String hash, String description) {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
@@ -126,6 +134,10 @@ public class DuchnetService {
 
     public Optional<Tag> findTagById(Long id) {
         return tagRepository.findById(id);
+    }
+
+    public List<Tag> findTagsByText(String text){
+        return tagRepository.findByTagContains(text);
     }
 
     public void postTag(String hash, String tag) {

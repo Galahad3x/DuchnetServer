@@ -55,6 +55,7 @@ public class ResourceEndpoint {
      */
     @GetMapping("/v1/resources/{resource}")
     public ResponseEntity<String> getResource(@PathVariable("resource") String resource) throws JsonProcessingException {
+        // TODO canviar ordre dels bucles per no afegir hashos buits
         switch (resource) {
             case "filenames": {
                 List<Content> contents = duchnetService.findAllContents();

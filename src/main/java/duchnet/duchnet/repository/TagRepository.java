@@ -11,6 +11,14 @@ import java.util.List;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
     /**
+     * Find tags that contain the text
+     * @param tag the tag
+     * @return List of Tags
+     */
+    @Query("select t from Tag t where upper(t.tag) like upper(concat('%', ?1, '%'))")
+    List<Tag> findByTagContains(String tag);
+
+    /**
      * Find all the tags of a concrete hash
      * @param content_id The id of this hash in the database
      * @return A list of all the tags matching the pattern
