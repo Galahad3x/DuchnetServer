@@ -1,5 +1,7 @@
 package duchnet.duchnet.common;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  */
 public class DescriptionXML {
     public String hash;
+    @JacksonXmlElementWrapper(useWrapping = false)
     public List<String> description;
 
     public DescriptionXML(String hash, List<String> descriptions) {

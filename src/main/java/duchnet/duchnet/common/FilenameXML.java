@@ -1,5 +1,7 @@
 package duchnet.duchnet.common;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  */
 public class FilenameXML {
     public String hash;
+    @JacksonXmlElementWrapper(useWrapping = false)
     public List<String> filename;
 
     public FilenameXML(String hash, List<String> filenames) {

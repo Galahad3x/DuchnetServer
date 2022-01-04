@@ -1,5 +1,7 @@
 package duchnet.duchnet.common;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+
 import java.util.List;
 
 /**
@@ -7,8 +9,11 @@ import java.util.List;
  */
 public class ContentXML {
     public String hash;
+    @JacksonXmlElementWrapper(useWrapping = false)
     public List<String> filename;
+    @JacksonXmlElementWrapper(useWrapping = false)
     public List<String> description;
+    @JacksonXmlElementWrapper(useWrapping = false)
     public List<String> tag;
 
     public ContentXML(String hash, List<String> filenames, List<String> descriptions, List<String> tags) {
