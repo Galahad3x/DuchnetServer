@@ -11,7 +11,9 @@ import duchnet.duchnet.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -71,6 +73,12 @@ public class DuchnetService {
     public void postFilename(String hash, String name) {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
+            List<FileName> byFilenameContains = filenameRepository.findByFilenameContains(name);
+            for (FileName fn : byFilenameContains){
+                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getFilename().equals(name)){
+                    return;
+                }
+            }
             filenameRepository.save(new FileName(optional.get().getId(), name));
         } else {
             Content daContent = new Content(hash);
@@ -109,6 +117,12 @@ public class DuchnetService {
     public void postDescription(String hash, String description) {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
+            List<Description> byDescriptionContains = descriptionRepository.findByDescriptionContains(description);
+            for (Description fn : byDescriptionContains){
+                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getDescription().equals(description)){
+                    return;
+                }
+            }
             descriptionRepository.save(new Description(optional.get().getId(), description));
         } else {
             Content daContent = new Content(hash);
@@ -147,6 +161,12 @@ public class DuchnetService {
     public void postTag(String hash, String tag) {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
+            List<Tag> byTagContains = tagRepository.findByTagContains(tag);
+            for (Tag fn : byTagContains){
+                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getTag().equals(tag)){
+                    return;
+                }
+            }
             tagRepository.save(new Tag(optional.get().getId(), tag));
         } else {
             Content daContent = new Content(hash);
