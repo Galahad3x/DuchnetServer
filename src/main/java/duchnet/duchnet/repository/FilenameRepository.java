@@ -12,6 +12,7 @@ import java.util.List;
 public interface FilenameRepository extends JpaRepository<FileName, Long> {
     /**
      * Find all the filenames that contain the text
+     *
      * @param filename The filename
      * @return List of FileNames
      */
@@ -20,6 +21,7 @@ public interface FilenameRepository extends JpaRepository<FileName, Long> {
 
     /**
      * Find all the filenames of a concrete hash
+     *
      * @param content_id The id of this hash in the database
      * @return A list of all the filenames matching the pattern
      */
@@ -28,6 +30,7 @@ public interface FilenameRepository extends JpaRepository<FileName, Long> {
 
     /**
      * Delete all the filenames of a concrete hash
+     *
      * @param content_id The id of this hash in the database
      */
     @Modifying
@@ -36,6 +39,7 @@ public interface FilenameRepository extends JpaRepository<FileName, Long> {
 
     /**
      * Delete all filenames by who owns them
+     *
      * @param owner_id Id of the owner
      */
     @Modifying

@@ -15,6 +15,7 @@ import java.util.List;
 public interface DescriptionRepository extends JpaRepository<Description, Long> {
     /**
      * Find all the descriptions that contain the text
+     *
      * @param description the text to look for inside the description
      * @return A list of descriptions
      */
@@ -23,6 +24,7 @@ public interface DescriptionRepository extends JpaRepository<Description, Long> 
 
     /**
      * Find all the descriptions of a concrete hash
+     *
      * @param content_id The id of this hash in the database
      * @return A list of all the descriptions matching the pattern
      */
@@ -31,6 +33,7 @@ public interface DescriptionRepository extends JpaRepository<Description, Long> 
 
     /**
      * Delete all the descriptions of a concrete hash
+     *
      * @param content_id The id of this hash in the database
      */
     @Modifying
@@ -39,6 +42,7 @@ public interface DescriptionRepository extends JpaRepository<Description, Long> 
 
     /**
      * Delete all descriptions by who owns them
+     *
      * @param owner_id Id of the owner
      */
     @Modifying

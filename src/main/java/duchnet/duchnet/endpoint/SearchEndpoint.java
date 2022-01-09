@@ -22,12 +22,25 @@ public class SearchEndpoint {
     @Autowired
     DuchnetService duchnetService;
 
+    /**
+     * Searching by some type but the type is missing
+     *
+     * @return ResponseEntity with error message
+     */
     @GetMapping("/v2/contents/search/")
     @DeleteMapping("/v2/contents/search/")
     public ResponseEntity<String> searchWithNoType() {
         return new ResponseEntity<>("NO RESOURCE TYPE", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
+    /**
+     * Use partial search to search for resources
+     *
+     * @param resource the type of search
+     * @param text     the search text
+     * @return ResponseEntity with results and a code
+     * @throws JsonProcessingException if writing the XML fails
+     */
     @GetMapping(value = "/v2/contents/search/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> findByResource(@PathVariable("resource") String resource, @RequestBody String text) throws JsonProcessingException {
         List<ContentXML> XMLs = new LinkedList<>();
@@ -116,11 +129,20 @@ public class SearchEndpoint {
         return new ResponseEntity<>(new XmlMapper().writeValueAsString(XMLs), HttpStatus.OK);
     }
 
+    /**
+     * Use partial search to search for resources and delete them
+     *
+     * @param resource the type of search
+     * @param text     the search text
+     * @param username server authentication username
+     * @param password server authentication password
+     * @return ResponseEntity with results and a code
+     */
     @DeleteMapping(value = "/v2/contents/search/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> deleteBySearch(@PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         switch (resource) {
             case "descriptions":

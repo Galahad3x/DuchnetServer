@@ -62,13 +62,15 @@ public class ContentEndpoint {
      * Deletes all resources related to a hash
      *
      * @param hash The hash we want to delete
+     * @param username server authentication username
+     * @param password server authentication password
      * @return a ResponseEntity of a String and a status code
      */
     @DeleteMapping("/v2/contents/{hash}")
     public ResponseEntity<String> deleteAllResourcesOfHash(@PathVariable("hash") String hash, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
@@ -137,13 +139,15 @@ public class ContentEndpoint {
      * @param hash     The hash
      * @param resource The resource type
      * @param text     The text of the resource
+     * @param username server authentication username
+     * @param password server authentication password
      * @return ResponseEntity With string and status code
      */
     @PostMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> postNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         if (text.isBlank()) {
             return new ResponseEntity<>("EMPTY BODY", HttpStatus.BAD_REQUEST);
@@ -173,13 +177,15 @@ public class ContentEndpoint {
      * @param hash     The hash
      * @param resource The resource type
      * @param text     The text of the resource
+     * @param username server authentication username
+     * @param password server authentication password
      * @return ResponseEntity With string and status code
      */
     @PutMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> putNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (text.isBlank()) {
@@ -212,6 +218,8 @@ public class ContentEndpoint {
      * Self-explanatory name
      *
      * @param hash     The hash
+     * @param username server authentication username
+     * @param password server authentication password
      * @param resource The resource type
      * @return ResponseEntity with string and status code
      */
@@ -219,7 +227,7 @@ public class ContentEndpoint {
     public ResponseEntity<String> deleteAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {

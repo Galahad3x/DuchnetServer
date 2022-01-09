@@ -57,13 +57,15 @@ public class EverythingEndpoint {
     /**
      * Delete everything
      *
-     * @return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
+     * @param username server authentication username
+     * @param password server authentication password
+     * @return new ResponseEntity<>("SUCCESSFUL", HttpStatus. OK);
      */
     @DeleteMapping("/v2/")
     public ResponseEntity<String> deleteEverything(@RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         duchnetService.deleteAllFilenames(user);
         duchnetService.deleteAllDescriptions(user);

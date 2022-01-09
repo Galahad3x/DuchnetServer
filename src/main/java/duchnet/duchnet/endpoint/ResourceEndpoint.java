@@ -41,6 +41,8 @@ public class ResourceEndpoint {
     /**
      * Delete everything
      *
+     * @param username server authentication username
+     * @param password server authentication password
      * @return ResponseEntity with a string and status code
      */
     @DeleteMapping("/v2/resources/")
@@ -133,13 +135,15 @@ public class ResourceEndpoint {
      * Delete all the resources of a specific type owned by a user
      *
      * @param resource The resource type
+     * @param username server authentication username
+     * @param password server authentication password
      * @return ResponseEntity with a string and a status code
      */
     @DeleteMapping("/v2/resources/{resource}")
     public ResponseEntity<String> deleteResource(@PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
-            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("FAILED AUTHENTICATION", HttpStatus.FORBIDDEN);
         }
         switch (resource) {
             case "filenames": {

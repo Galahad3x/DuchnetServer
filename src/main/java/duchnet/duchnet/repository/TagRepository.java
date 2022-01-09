@@ -12,6 +12,7 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<Tag, Long> {
     /**
      * Find tags that contain the text
+     *
      * @param tag the tag
      * @return List of Tags
      */
@@ -20,6 +21,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     /**
      * Find all the tags of a concrete hash
+     *
      * @param content_id The id of this hash in the database
      * @return A list of all the tags matching the pattern
      */
@@ -28,6 +30,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     /**
      * Delete all the tags of a concrete hash
+     *
      * @param content_id The id of this hash in the database
      */
     @Modifying
@@ -36,6 +39,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     /**
      * Delete all tags by who owns them
+     *
      * @param owner_id Id of the owner
      */
     @Modifying

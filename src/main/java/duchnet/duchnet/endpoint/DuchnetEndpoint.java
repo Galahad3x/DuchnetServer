@@ -4,7 +4,8 @@ import duchnet.duchnet.DuchnetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Basic API mapping
@@ -17,10 +18,11 @@ public class DuchnetEndpoint {
 
     /**
      * Custom /error mapping
+     *
      * @return ResponseEntity with error status code
      */
     @GetMapping("/error")
-    public ResponseEntity<String> error(){
+    public ResponseEntity<String> error() {
         return new ResponseEntity<>("Something went wrong", HttpStatus.NOT_ACCEPTABLE);
     }
 }
