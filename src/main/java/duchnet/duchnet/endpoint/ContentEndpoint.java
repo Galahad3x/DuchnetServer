@@ -3,14 +3,8 @@ package duchnet.duchnet.endpoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import duchnet.duchnet.DuchnetService;
-import duchnet.duchnet.common.ContentXML;
-import duchnet.duchnet.common.DescriptionXML;
-import duchnet.duchnet.common.FilenameXML;
-import duchnet.duchnet.common.TagXML;
-import duchnet.duchnet.models.Content;
-import duchnet.duchnet.models.Description;
-import duchnet.duchnet.models.FileName;
-import duchnet.duchnet.models.Tag;
+import duchnet.duchnet.common.*;
+import duchnet.duchnet.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -108,6 +102,13 @@ public class ContentEndpoint {
                         tag.add(tg.getTag());
                     }
                     return new ResponseEntity<>(new XmlMapper().writeValueAsString(new TagXML(the_content.get().hash, tag)), HttpStatus.OK);
+                case "peers":
+                    List<PeerInfo> peerInfos = duchnetService.findAllPeerInfos(hash);
+                    List<String> pinfo = new LinkedList<>();
+                    for (PeerInfo pi : peerInfos) {
+                        pinfo.add(pi.toString());
+                    }
+                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(pinfo), HttpStatus.OK);
                 default:
                     return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
             }
@@ -137,6 +138,9 @@ public class ContentEndpoint {
                 break;
             case "tags":
                 duchnetService.postTag(hash, text);
+                break;
+            case "peers":
+                duchnetService.postPeer(hash, text);
                 break;
             default:
                 return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
@@ -168,6 +172,9 @@ public class ContentEndpoint {
                 case "tags":
                     duchnetService.postTag(hash, text);
                     break;
+                case "peers":
+                    duchnetService.postPeer(hash, text);
+                    break;
                 default:
                     return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
             }
@@ -196,6 +203,9 @@ public class ContentEndpoint {
                     break;
                 case "tags":
                     duchnetService.deleteTagsByContentId(the_content.get().getId());
+                    break;
+                case "peers":
+                    duchnetService.deletePeersByHash(the_content.get().hash);
                     break;
                 default:
                     return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);

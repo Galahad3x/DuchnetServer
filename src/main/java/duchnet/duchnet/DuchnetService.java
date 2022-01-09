@@ -1,17 +1,10 @@
 package duchnet.duchnet;
 
-import duchnet.duchnet.models.Content;
-import duchnet.duchnet.models.Description;
-import duchnet.duchnet.models.FileName;
-import duchnet.duchnet.models.Tag;
-import duchnet.duchnet.repository.ContentRepository;
-import duchnet.duchnet.repository.DescriptionRepository;
-import duchnet.duchnet.repository.FilenameRepository;
-import duchnet.duchnet.repository.TagRepository;
+import duchnet.duchnet.models.*;
+import duchnet.duchnet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +22,8 @@ public class DuchnetService {
     TagRepository tagRepository;
     @Autowired
     ContentRepository contentRepository;
+    @Autowired
+    PeerInfoRepository peerInfoRepository;
 
     public List<Content> findAllContents() {
         return contentRepository.findAll();
@@ -183,5 +178,34 @@ public class DuchnetService {
 
     public void deleteTagsByContentId(Long content_id) {
         tagRepository.deleteByContentId(content_id);
+    }
+
+    public List<PeerInfo> findAllPeerInfos(String hash) {
+        return peerInfoRepository.findPeersByHash(hash);
+    }
+
+    public void postPeer(String hash, String text) {
+        Optional<Content> optional = contentRepository.findByHashEquals(hash);
+        if (optional.isPresent()) {
+            List<PeerInfo> peers = peerInfoRepository.findPeersByHash(optional.get().hash);
+            for (PeerInfo peerInfo : peers){
+                if (peerInfo.toString().equals(text)){
+                    return;
+                }
+            }
+            PeerInfo p = PeerInfo.fromString(text);
+            p.setHash(hash);
+            peerInfoRepository.save(p);
+        } else {
+            Content daContent = new Content(hash);
+            contentRepository.save(daContent);
+            PeerInfo p = PeerInfo.fromString(text);
+            p.setHash(hash);
+            peerInfoRepository.save(p);
+        }
+    }
+
+    public void deletePeersByHash(String hash) {
+        peerInfoRepository.deletePeersByHash(hash);
     }
 }
