@@ -14,6 +14,14 @@ public interface PeerInfoRepository extends JpaRepository<PeerInfo, Long> {
     List<PeerInfo> findPeersByHash(String hash);
 
     @Modifying
-    @Query("delete from PeerInfo p where upper(p.hash) = upper(?1)")
-    void deletePeersByHash(String hash);
+    @Query("delete from PeerInfo p where upper(p.hash) = upper(?1) and p.owner_id = ?2")
+    void deletePeersByHash(String hash, Long oid);
+
+    @Modifying
+    @Query("delete from PeerInfo p where p.ip = ?1 and p.port = ?2")
+    void deleteByHost(String ip, Integer port);
+
+    @Modifying
+    @Query("delete from PeerInfo p where p.owner_id = ?1")
+    void deleteAllByOwnerId(Long owner_id);
 }

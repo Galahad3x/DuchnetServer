@@ -26,6 +26,10 @@ public class PeerInfo implements Serializable {
      * Hash of the file this peerinfo owns
      */
     public String hash;
+    /**
+     * Owner of this file
+     */
+    public Long owner_id;
 
     public PeerInfo() {
     }

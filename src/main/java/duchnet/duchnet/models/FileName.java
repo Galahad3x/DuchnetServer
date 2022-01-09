@@ -13,6 +13,7 @@ public class FileName {
     private Long id;
 
     private Long content_id;
+    public Long owner_id;
 
     public Long getContent_id() {
         return content_id;
@@ -23,9 +24,10 @@ public class FileName {
     public FileName() {
     }
 
-    public FileName(Long content_id, String filename){
+    public FileName(Long content_id, String filename, Long owner_id){
         this.content_id = content_id;
         this.filename = filename;
+        this.owner_id = owner_id;
     }
 
     public String getFilename() {

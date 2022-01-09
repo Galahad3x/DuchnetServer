@@ -13,6 +13,8 @@ public class Content {
     private Long id;
     public String hash;
 
+    public Long owner_id;
+
     public Content() {
     }
 

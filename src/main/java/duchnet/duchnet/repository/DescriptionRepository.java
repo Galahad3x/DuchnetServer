@@ -34,6 +34,14 @@ public interface DescriptionRepository extends JpaRepository<Description, Long> 
      * @param content_id The id of this hash in the database
      */
     @Modifying
-    @Query("delete from Description d where d.content_id = ?1")
-    void deleteByContentId(Long content_id);
+    @Query("delete from Description d where d.content_id = ?1 and d.owner_id = ?2")
+    void deleteByContentId(Long content_id, Long oid);
+
+    /**
+     * Delete all descriptions by who owns them
+     * @param owner_id Id of the owner
+     */
+    @Modifying
+    @Query("delete from Description f where upper(f.owner_id) = upper(?1)")
+    void deleteAllByOwnerId(Long owner_id);
 }

@@ -3,6 +3,7 @@ package duchnet.duchnet.endpoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import duchnet.duchnet.DuchnetService;
+import duchnet.duchnet.HashCalculator;
 import duchnet.duchnet.common.ContentXML;
 import duchnet.duchnet.common.DescriptionXML;
 import duchnet.duchnet.common.FilenameXML;
@@ -65,10 +66,17 @@ public class ContentEndpoint {
      */
     @DeleteMapping("/v2/contents/{hash}")
     public ResponseEntity<String> deleteAllResourcesOfHash(@PathVariable("hash") String hash, @RequestHeader("username") String username, @RequestHeader("password") String password) {
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
-            duchnetService.deleteContent(the_content.get().getId());
-            return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
+            if (the_content.get().owner_id.equals(user.getId())) {
+                duchnetService.deleteContent(the_content.get().getId(), user);
+                return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("FORBIDDEN", HttpStatus.FORBIDDEN);
         } else {
             return new ResponseEntity<>("NON EXISTENT", HttpStatus.BAD_REQUEST);
         }
@@ -133,21 +141,25 @@ public class ContentEndpoint {
      */
     @PostMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> postNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
         if (text.isBlank()) {
             return new ResponseEntity<>("EMPTY BODY", HttpStatus.BAD_REQUEST);
         }
         switch (resource) {
             case "descriptions":
-                duchnetService.postDescription(hash, text);
+                duchnetService.postDescription(hash, text, user);
                 break;
             case "filenames":
-                duchnetService.postFilename(hash, text);
+                duchnetService.postFilename(hash, text, user);
                 break;
             case "tags":
-                duchnetService.postTag(hash, text);
+                duchnetService.postTag(hash, text, user);
                 break;
             case "peers":
-                duchnetService.postPeer(hash, text);
+                duchnetService.postPeer(hash, text, user);
                 break;
             default:
                 return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
@@ -165,6 +177,10 @@ public class ContentEndpoint {
      */
     @PutMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> putNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (text.isBlank()) {
             return new ResponseEntity<>("EMPTY BODY", HttpStatus.BAD_REQUEST);
@@ -172,16 +188,16 @@ public class ContentEndpoint {
         if (the_content.isPresent()) {
             switch (resource) {
                 case "descriptions":
-                    duchnetService.postDescription(hash, text);
+                    duchnetService.postDescription(hash, text, user);
                     break;
                 case "filenames":
-                    duchnetService.postFilename(hash, text);
+                    duchnetService.postFilename(hash, text, user);
                     break;
                 case "tags":
-                    duchnetService.postTag(hash, text);
+                    duchnetService.postTag(hash, text, user);
                     break;
                 case "peers":
-                    duchnetService.postPeer(hash, text);
+                    duchnetService.postPeer(hash, text, user);
                     break;
                 default:
                     return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);
@@ -201,20 +217,24 @@ public class ContentEndpoint {
      */
     @DeleteMapping("/v2/contents/{hash}/{resource}")
     public ResponseEntity<String> deleteAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
             switch (resource) {
                 case "descriptions":
-                    duchnetService.deleteDescriptionsByContentId(the_content.get().getId());
+                    duchnetService.deleteDescriptionsByContentId(the_content.get().getId(), user);
                     break;
                 case "filenames":
-                    duchnetService.deleteFilenamesByContentId(the_content.get().getId());
+                    duchnetService.deleteFilenamesByContentId(the_content.get().getId(), user);
                     break;
                 case "tags":
-                    duchnetService.deleteTagsByContentId(the_content.get().getId());
+                    duchnetService.deleteTagsByContentId(the_content.get().getId(), user);
                     break;
                 case "peers":
-                    duchnetService.deletePeersByHash(the_content.get().hash);
+                    duchnetService.deletePeersByHash(the_content.get().hash, user);
                     break;
                 default:
                     return new ResponseEntity<>("RESOURCE TYPE NOT FOUND", HttpStatus.METHOD_NOT_ALLOWED);

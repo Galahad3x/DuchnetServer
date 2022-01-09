@@ -31,6 +31,14 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
      * @param content_id The id of this hash in the database
      */
     @Modifying
-    @Query("delete from Tag t where t.content_id = ?1")
-    void deleteByContentId(Long content_id);
+    @Query("delete from Tag t where t.content_id = ?1 and t.owner_id = ?2")
+    void deleteByContentId(Long content_id, Long oid);
+
+    /**
+     * Delete all tags by who owns them
+     * @param owner_id Id of the owner
+     */
+    @Modifying
+    @Query("delete from Tag f where upper(f.owner_id) = upper(?1)")
+    void deleteAllByOwnerId(Long owner_id);
 }

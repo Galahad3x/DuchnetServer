@@ -13,6 +13,7 @@ public class Tag {
     private Long id;
 
     private Long content_id;
+    public Long owner_id;
 
     public Long getContent_id() {
         return content_id;
@@ -23,9 +24,10 @@ public class Tag {
     public Tag() {
     }
 
-    public Tag(Long content_id, String tag) {
+    public Tag(Long content_id, String tag, Long owner_id) {
         this.content_id = content_id;
         this.tag = tag;
+        this.owner_id = owner_id;
     }
 
     public String getTag() {

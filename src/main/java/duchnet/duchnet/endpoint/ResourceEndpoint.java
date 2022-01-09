@@ -130,24 +130,28 @@ public class ResourceEndpoint {
     }
 
     /**
-     * Get all the resources of a specific type
+     * Delete all the resources of a specific type owned by a user
      *
      * @param resource The resource type
      * @return ResponseEntity with a string and a status code
      */
     @DeleteMapping("/v2/resources/{resource}")
-    public ResponseEntity<String> deleteResource(@PathVariable("resource") String resource) {
+    public ResponseEntity<String> deleteResource(@PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
         switch (resource) {
             case "filenames": {
-                duchnetService.deleteAllFilenames();
+                duchnetService.deleteAllFilenames(user);
                 return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
             }
             case "descriptions": {
-                duchnetService.deleteAllDescriptions();
+                duchnetService.deleteAllDescriptions(user);
                 return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
             }
             case "tags": {
-                duchnetService.deleteAllTags();
+                duchnetService.deleteAllTags(user);
                 return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
             }
         }

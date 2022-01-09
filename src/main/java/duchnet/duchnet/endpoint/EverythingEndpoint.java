@@ -3,11 +3,9 @@ package duchnet.duchnet.endpoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import duchnet.duchnet.DuchnetService;
+import duchnet.duchnet.HashCalculator;
 import duchnet.duchnet.common.ContentXML;
-import duchnet.duchnet.models.Content;
-import duchnet.duchnet.models.Description;
-import duchnet.duchnet.models.FileName;
-import duchnet.duchnet.models.Tag;
+import duchnet.duchnet.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,10 +61,14 @@ public class EverythingEndpoint {
      */
     @DeleteMapping("/v2/")
     public ResponseEntity<String> deleteEverything(@RequestHeader("username") String username, @RequestHeader("password") String password) {
-        duchnetService.deleteAllContents();
-        duchnetService.deleteAllFilenames();
-        duchnetService.deleteAllDescriptions();
-        duchnetService.deleteAllTags();
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
+        duchnetService.deleteAllFilenames(user);
+        duchnetService.deleteAllDescriptions(user);
+        duchnetService.deleteAllTags(user);
+        duchnetService.deleteAllPeers(user);
         return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
     }
 }

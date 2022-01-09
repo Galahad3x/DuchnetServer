@@ -3,11 +3,9 @@ package duchnet.duchnet.endpoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import duchnet.duchnet.DuchnetService;
+import duchnet.duchnet.HashCalculator;
 import duchnet.duchnet.common.ContentXML;
-import duchnet.duchnet.models.Content;
-import duchnet.duchnet.models.Description;
-import duchnet.duchnet.models.FileName;
-import duchnet.duchnet.models.Tag;
+import duchnet.duchnet.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -104,13 +102,13 @@ public class SearchEndpoint {
             Optional<Content> content_op = duchnetService.findContentByHash(xml.hash);
             if (content_op.isPresent()) {
                 Content content = content_op.get();
-                for (FileName name : duchnetService.findAllFilenames(content.getId())){
+                for (FileName name : duchnetService.findAllFilenames(content.getId())) {
                     xml.filename.add(name.getFilename());
                 }
-                for (Description desc : duchnetService.findAllDescriptions(content.getId())){
+                for (Description desc : duchnetService.findAllDescriptions(content.getId())) {
                     xml.description.add(desc.getDescription());
                 }
-                for (Tag tg : duchnetService.findAllTags(content.getId())){
+                for (Tag tg : duchnetService.findAllTags(content.getId())) {
                     xml.tag.add(tg.getTag());
                 }
             }
@@ -119,24 +117,40 @@ public class SearchEndpoint {
     }
 
     @DeleteMapping(value = "/v2/contents/search/{resource}", consumes = {"text/plain"})
-    public ResponseEntity<String> deleteBySearch(@PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password){
-        switch (resource){
+    public ResponseEntity<String> deleteBySearch(@PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
+        User user = new User(username, HashCalculator.getStringHash(password));
+        if (!duchnetService.authentify(user)) {
+            return new ResponseEntity<>("FAILED AUTHENTIFICATION", HttpStatus.FORBIDDEN);
+        }
+        switch (resource) {
             case "descriptions":
                 List<Description> descriptions = duchnetService.findDescriptionsByText(text);
-                for (Description desc : descriptions){
-                    duchnetService.deleteDescriptionById(desc.getId());
+                for (Description desc : descriptions) {
+                    if (desc.owner_id.equals(user.getId())) {
+                        duchnetService.deleteDescriptionById(desc.getId());
+                    }
                 }
                 break;
             case "filenames":
                 List<FileName> filenames = duchnetService.findFilenamesByText(text);
-                for (FileName name : filenames){
-                    duchnetService.deleteFilenameById(name.getId());
+                for (FileName name : filenames) {
+                    if (name.owner_id.equals(user.getId())) {
+                        duchnetService.deleteFilenameById(name.getId());
+                    }
                 }
                 break;
             case "tags":
                 List<Tag> tags = duchnetService.findTagsByText(text);
-                for (Tag tag : tags){
-                    duchnetService.deleteTagById(tag.getId());
+                for (Tag tag : tags) {
+                    if (tag.owner_id.equals(user.getId())) {
+                        duchnetService.deleteTagById(tag.getId());
+                    }
+                }
+                break;
+            case "peers":
+                PeerInfo host = PeerInfo.fromString(text);
+                if (host.owner_id.equals(user.getId())) {
+                    duchnetService.deletePeersByHost(host);
                 }
                 break;
             default:

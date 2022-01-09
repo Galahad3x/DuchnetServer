@@ -31,6 +31,14 @@ public interface FilenameRepository extends JpaRepository<FileName, Long> {
      * @param content_id The id of this hash in the database
      */
     @Modifying
-    @Query("delete from FileName f where f.content_id = ?1")
-    void deleteByContentId(Long content_id);
+    @Query("delete from FileName f where f.content_id = ?1 and f.owner_id = ?2")
+    void deleteByContentId(Long content_id, Long oid);
+
+    /**
+     * Delete all filenames by who owns them
+     * @param owner_id Id of the owner
+     */
+    @Modifying
+    @Query("delete from FileName f where upper(f.owner_id) = upper(?1)")
+    void deleteAllByOwnerId(Long owner_id);
 }
