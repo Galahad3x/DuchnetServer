@@ -3,7 +3,10 @@ package duchnet.duchnet.endpoint;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import duchnet.duchnet.DuchnetService;
-import duchnet.duchnet.common.*;
+import duchnet.duchnet.common.ContentXML;
+import duchnet.duchnet.common.DescriptionXML;
+import duchnet.duchnet.common.FilenameXML;
+import duchnet.duchnet.common.TagXML;
 import duchnet.duchnet.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +20,7 @@ import java.util.Optional;
 /**
  * Handles all the endpoints related to contents
  */
-@RestController("/v1/contents/")
+@RestController("/v2/contents/")
 public class ContentEndpoint {
 
     @Autowired
@@ -25,11 +28,12 @@ public class ContentEndpoint {
 
     /**
      * Gets all resources given a hash
+     *
      * @param hash The hash we are interested in
      * @return A ResponseEntity containing a string representing a ContentXML object in XML and a status code signaling correct execution or not
      * @throws JsonProcessingException If transforming ContentXML to XML fails
      */
-    @GetMapping("/v1/contents/{hash}")
+    @GetMapping("/v2/contents/{hash}")
     public ResponseEntity<String> getAllResourcesOfHash(@PathVariable("hash") String hash) throws JsonProcessingException {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
@@ -55,11 +59,12 @@ public class ContentEndpoint {
 
     /**
      * Deletes all resources related to a hash
+     *
      * @param hash The hash we want to delete
      * @return a ResponseEntity of a String and a status code
      */
-    @DeleteMapping("/v1/contents/{hash}")
-    public ResponseEntity<String> deleteAllResourcesOfHash(@PathVariable("hash") String hash) {
+    @DeleteMapping("/v2/contents/{hash}")
+    public ResponseEntity<String> deleteAllResourcesOfHash(@PathVariable("hash") String hash, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
             duchnetService.deleteContent(the_content.get().getId());
@@ -71,12 +76,13 @@ public class ContentEndpoint {
 
     /**
      * Get a list of specific resources from a specific hash
-     * @param hash The hash we are interested in
+     *
+     * @param hash     The hash we are interested in
      * @param resource The type of resource
      * @return ResponseEntity with a string with a list of the resourceXML and a status code
      * @throws JsonProcessingException If xmlMapper fails
      */
-    @GetMapping("/v1/contents/{hash}/{resource}")
+    @GetMapping("/v2/contents/{hash}/{resource}")
     public ResponseEntity<String> getAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource) throws JsonProcessingException {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
@@ -119,13 +125,14 @@ public class ContentEndpoint {
 
     /**
      * Post a new resource, if the hash doesn't exist it's created
-     * @param hash The hash
+     *
+     * @param hash     The hash
      * @param resource The resource type
-     * @param text The text of the resource
+     * @param text     The text of the resource
      * @return ResponseEntity With string and status code
      */
-    @PostMapping(value = "/v1/contents/{hash}/{resource}", consumes = {"text/plain"})
-    public ResponseEntity<String> postNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text) {
+    @PostMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
+    public ResponseEntity<String> postNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         if (text.isBlank()) {
             return new ResponseEntity<>("EMPTY BODY", HttpStatus.BAD_REQUEST);
         }
@@ -150,13 +157,14 @@ public class ContentEndpoint {
 
     /**
      * Post a new resource, if the hash doesn't exist it fails
-     * @param hash The hash
+     *
+     * @param hash     The hash
      * @param resource The resource type
-     * @param text The text of the resource
+     * @param text     The text of the resource
      * @return ResponseEntity With string and status code
      */
-    @PutMapping(value = "/v1/contents/{hash}/{resource}", consumes = {"text/plain"})
-    public ResponseEntity<String> putNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text) {
+    @PutMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
+    public ResponseEntity<String> putNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (text.isBlank()) {
             return new ResponseEntity<>("EMPTY BODY", HttpStatus.BAD_REQUEST);
@@ -186,12 +194,13 @@ public class ContentEndpoint {
 
     /**
      * Self-explanatory name
-     * @param hash The hash
+     *
+     * @param hash     The hash
      * @param resource The resource type
      * @return ResponseEntity with string and status code
      */
-    @DeleteMapping("/v1/contents/{hash}/{resource}")
-    public ResponseEntity<String> deleteAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource) {
+    @DeleteMapping("/v2/contents/{hash}/{resource}")
+    public ResponseEntity<String> deleteAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
             switch (resource) {

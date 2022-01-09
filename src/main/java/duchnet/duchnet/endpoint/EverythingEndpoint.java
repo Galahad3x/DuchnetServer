@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Endpoint to map the base URLs, which get or delete everything
  */
-@RestController("/v1")
+@RestController("/v2")
 public class EverythingEndpoint {
 
     @Autowired
@@ -29,10 +30,11 @@ public class EverythingEndpoint {
 
     /**
      * Get everything from the database
+     *
      * @return ResponseEntity with a string representing a List of ContentXMLs in XML and a status code
      * @throws JsonProcessingException If xmlMapper fails
      */
-    @GetMapping("/v1/")
+    @GetMapping("/v2/")
     public ResponseEntity<String> getEverything() throws JsonProcessingException {
         List<Content> contents = duchnetService.findAllContents();
         List<ContentXML> contentXMLS = new LinkedList<>();
@@ -56,10 +58,11 @@ public class EverythingEndpoint {
 
     /**
      * Delete everything
+     *
      * @return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
      */
-    @DeleteMapping("/v1/")
-    public ResponseEntity<String> deleteEverything(){
+    @DeleteMapping("/v2/")
+    public ResponseEntity<String> deleteEverything(@RequestHeader("username") String username, @RequestHeader("password") String password) {
         duchnetService.deleteAllContents();
         duchnetService.deleteAllFilenames();
         duchnetService.deleteAllDescriptions();

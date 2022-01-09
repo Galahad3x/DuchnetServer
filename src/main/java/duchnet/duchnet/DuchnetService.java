@@ -4,6 +4,7 @@ import duchnet.duchnet.models.*;
 import duchnet.duchnet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Objects;
@@ -61,7 +62,7 @@ public class DuchnetService {
         return filenameRepository.findById(id);
     }
 
-    public List<FileName> findFilenamesByText(String text){
+    public List<FileName> findFilenamesByText(String text) {
         return filenameRepository.findByFilenameContains(text);
     }
 
@@ -69,8 +70,8 @@ public class DuchnetService {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
             List<FileName> byFilenameContains = filenameRepository.findByFilenameContains(name);
-            for (FileName fn : byFilenameContains){
-                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getFilename().equals(name)){
+            for (FileName fn : byFilenameContains) {
+                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getFilename().equals(name)) {
                     return;
                 }
             }
@@ -86,7 +87,9 @@ public class DuchnetService {
         filenameRepository.deleteAll();
     }
 
-    public void deleteFilenameById(Long id) {filenameRepository.deleteById(id);}
+    public void deleteFilenameById(Long id) {
+        filenameRepository.deleteById(id);
+    }
 
     public void deleteFilenamesByContentId(Long content_id) {
         filenameRepository.deleteByContentId(content_id);
@@ -113,8 +116,8 @@ public class DuchnetService {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
             List<Description> byDescriptionContains = descriptionRepository.findByDescriptionContains(description);
-            for (Description fn : byDescriptionContains){
-                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getDescription().equals(description)){
+            for (Description fn : byDescriptionContains) {
+                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getDescription().equals(description)) {
                     return;
                 }
             }
@@ -130,7 +133,9 @@ public class DuchnetService {
         descriptionRepository.deleteAll();
     }
 
-    public void deleteDescriptionById(Long id) {descriptionRepository.deleteById(id);}
+    public void deleteDescriptionById(Long id) {
+        descriptionRepository.deleteById(id);
+    }
 
     public void deleteDescriptionsByContentId(Long content_id) {
         descriptionRepository.deleteByContentId(content_id);
@@ -149,7 +154,7 @@ public class DuchnetService {
         return tagRepository.findById(id);
     }
 
-    public List<Tag> findTagsByText(String text){
+    public List<Tag> findTagsByText(String text) {
         return tagRepository.findByTagContains(text);
     }
 
@@ -157,8 +162,8 @@ public class DuchnetService {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
             List<Tag> byTagContains = tagRepository.findByTagContains(tag);
-            for (Tag fn : byTagContains){
-                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getTag().equals(tag)){
+            for (Tag fn : byTagContains) {
+                if (Objects.equals(fn.getContent_id(), optional.get().getId()) && fn.getTag().equals(tag)) {
                     return;
                 }
             }
@@ -174,7 +179,9 @@ public class DuchnetService {
         tagRepository.deleteAll();
     }
 
-    public void deleteTagById(Long id) {tagRepository.deleteById(id);}
+    public void deleteTagById(Long id) {
+        tagRepository.deleteById(id);
+    }
 
     public void deleteTagsByContentId(Long content_id) {
         tagRepository.deleteByContentId(content_id);
@@ -188,8 +195,8 @@ public class DuchnetService {
         Optional<Content> optional = contentRepository.findByHashEquals(hash);
         if (optional.isPresent()) {
             List<PeerInfo> peers = peerInfoRepository.findPeersByHash(optional.get().hash);
-            for (PeerInfo peerInfo : peers){
-                if (peerInfo.toString().equals(text)){
+            for (PeerInfo peerInfo : peers) {
+                if (peerInfo.toString().equals(text)) {
                     return;
                 }
             }
