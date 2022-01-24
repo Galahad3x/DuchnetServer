@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/v2/auth")
+@RestController("/v3/auth")
 public class UserEndpoint {
 
     @Autowired
@@ -21,7 +21,7 @@ public class UserEndpoint {
      * @param password server authentication password
      * @return ResponseEntity with a status code
      */
-    @PostMapping("/v2/auth")
+    @PostMapping("/v3/auth")
     public ResponseEntity<String> createUser(@RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (duchnetService.createUser(user)) {
@@ -39,7 +39,7 @@ public class UserEndpoint {
      * @param new_password new password
      * @return ResponseEntity with a status code
      */
-    @PutMapping("/v2/auth")
+    @PutMapping("/v3/auth")
     public ResponseEntity<String> changePassword(@RequestHeader("username") String username, @RequestHeader("password") String password, @RequestHeader("new-password") String new_password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (duchnetService.modifyUser(user, new_password)) {
@@ -56,7 +56,7 @@ public class UserEndpoint {
      * @param password server authentication password
      * @return ResponseEntity with a status code
      */
-    @DeleteMapping("/v2/auth")
+    @DeleteMapping("/v3/auth")
     public ResponseEntity<String> deleteUser(@RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (duchnetService.deleteUser(user)) {

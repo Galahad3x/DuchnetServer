@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * Endpoint that maps everything related to resources
  */
-@RestController("/v2/resources")
+@RestController("/v3/resources")
 public class ResourceEndpoint {
 
     @Autowired
@@ -33,7 +33,7 @@ public class ResourceEndpoint {
      * @return ResponseEntity with a string representing a List of ContentXMLs in XML and a status code
      * @throws JsonProcessingException If xmlMapper fails
      */
-    @GetMapping("/v2/resources/")
+    @GetMapping("/v3/resources/")
     public ResponseEntity<String> getEverything() throws JsonProcessingException {
         return new EverythingEndpoint().getEverything();
     }
@@ -45,7 +45,7 @@ public class ResourceEndpoint {
      * @param password server authentication password
      * @return ResponseEntity with a string and status code
      */
-    @DeleteMapping("/v2/resources/")
+    @DeleteMapping("/v3/resources/")
     public ResponseEntity<String> deleteEverything(@RequestHeader("username") String username, @RequestHeader("password") String password) {
         return new EverythingEndpoint().deleteEverything(username, password);
     }
@@ -57,7 +57,7 @@ public class ResourceEndpoint {
      * @return ResponseEntity with a string with the List of ResourceXMLs in XML and a status code
      * @throws JsonProcessingException If xmlMapper fails
      */
-    @GetMapping("/v2/resources/{resource}")
+    @GetMapping("/v3/resources/{resource}")
     public ResponseEntity<String> getResource(@PathVariable("resource") String resource) throws JsonProcessingException {
         switch (resource) {
             case "descriptions":
@@ -139,7 +139,7 @@ public class ResourceEndpoint {
      * @param password server authentication password
      * @return ResponseEntity with a string and a status code
      */
-    @DeleteMapping("/v2/resources/{resource}")
+    @DeleteMapping("/v3/resources/{resource}")
     public ResponseEntity<String> deleteResource(@PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {

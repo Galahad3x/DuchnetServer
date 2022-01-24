@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * Handles all the endpoints related to contents
  */
-@RestController("/v2/contents/")
+@RestController("/v3/contents/")
 public class ContentEndpoint {
 
     @Autowired
@@ -34,7 +34,7 @@ public class ContentEndpoint {
      * @return A ResponseEntity containing a string representing a ContentXML object in XML and a status code signaling correct execution or not
      * @throws JsonProcessingException If transforming ContentXML to XML fails
      */
-    @GetMapping("/v2/contents/{hash}")
+    @GetMapping("/v3/contents/{hash}")
     public ResponseEntity<String> getAllResourcesOfHash(@PathVariable("hash") String hash) throws JsonProcessingException {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
@@ -66,7 +66,7 @@ public class ContentEndpoint {
      * @param password server authentication password
      * @return a ResponseEntity of a String and a status code
      */
-    @DeleteMapping("/v2/contents/{hash}")
+    @DeleteMapping("/v3/contents/{hash}")
     public ResponseEntity<String> deleteAllResourcesOfHash(@PathVariable("hash") String hash, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
@@ -92,7 +92,7 @@ public class ContentEndpoint {
      * @return ResponseEntity with a string with a list of the resourceXML and a status code
      * @throws JsonProcessingException If xmlMapper fails
      */
-    @GetMapping("/v2/contents/{hash}/{resource}")
+    @GetMapping("/v3/contents/{hash}/{resource}")
     public ResponseEntity<String> getAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource) throws JsonProcessingException {
         Optional<Content> the_content = duchnetService.findContentByHash(hash);
         if (the_content.isPresent()) {
@@ -143,7 +143,7 @@ public class ContentEndpoint {
      * @param password server authentication password
      * @return ResponseEntity With string and status code
      */
-    @PostMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
+    @PostMapping(value = "/v3/contents/{hash}/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> postNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
@@ -181,7 +181,7 @@ public class ContentEndpoint {
      * @param password server authentication password
      * @return ResponseEntity With string and status code
      */
-    @PutMapping(value = "/v2/contents/{hash}/{resource}", consumes = {"text/plain"})
+    @PutMapping(value = "/v3/contents/{hash}/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> putNewResource(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
@@ -223,7 +223,7 @@ public class ContentEndpoint {
      * @param resource The resource type
      * @return ResponseEntity with string and status code
      */
-    @DeleteMapping("/v2/contents/{hash}/{resource}")
+    @DeleteMapping("/v3/contents/{hash}/{resource}")
     public ResponseEntity<String> deleteAllSpecificResourcesOfHash(@PathVariable("hash") String hash, @PathVariable("resource") String resource, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {

@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("/v2/contents/search/")
+@RestController("/v3/contents/search/")
 public class SearchEndpoint {
 
     @Autowired
@@ -27,8 +27,8 @@ public class SearchEndpoint {
      *
      * @return ResponseEntity with error message
      */
-    @GetMapping("/v2/contents/search/")
-    @DeleteMapping("/v2/contents/search/")
+    @GetMapping("/v3/contents/search/")
+    @DeleteMapping("/v3/contents/search/")
     public ResponseEntity<String> searchWithNoType() {
         return new ResponseEntity<>("NO RESOURCE TYPE", HttpStatus.METHOD_NOT_ALLOWED);
     }
@@ -41,7 +41,7 @@ public class SearchEndpoint {
      * @return ResponseEntity with results and a code
      * @throws JsonProcessingException if writing the XML fails
      */
-    @GetMapping(value = "/v2/contents/search/{resource}", consumes = {"text/plain"})
+    @GetMapping(value = "/v3/contents/search/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> findByResource(@PathVariable("resource") String resource, @RequestBody String text) throws JsonProcessingException {
         List<ContentXML> XMLs = new LinkedList<>();
         switch (resource) {
@@ -138,7 +138,7 @@ public class SearchEndpoint {
      * @param password server authentication password
      * @return ResponseEntity with results and a code
      */
-    @DeleteMapping(value = "/v2/contents/search/{resource}", consumes = {"text/plain"})
+    @DeleteMapping(value = "/v3/contents/search/{resource}", consumes = {"text/plain"})
     public ResponseEntity<String> deleteBySearch(@PathVariable("resource") String resource, @RequestBody String text, @RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {

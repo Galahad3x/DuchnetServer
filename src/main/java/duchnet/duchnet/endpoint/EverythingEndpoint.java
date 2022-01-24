@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Endpoint to map the base URLs, which get or delete everything
  */
-@RestController("/v2")
+@RestController("/v3")
 public class EverythingEndpoint {
 
     @Autowired
@@ -32,7 +32,7 @@ public class EverythingEndpoint {
      * @return ResponseEntity with a string representing a List of ContentXMLs in XML and a status code
      * @throws JsonProcessingException If xmlMapper fails
      */
-    @GetMapping("/v2/")
+    @GetMapping("/v3/")
     public ResponseEntity<String> getEverything() throws JsonProcessingException {
         List<Content> contents = duchnetService.findAllContents();
         List<ContentXML> contentXMLS = new LinkedList<>();
@@ -61,7 +61,7 @@ public class EverythingEndpoint {
      * @param password server authentication password
      * @return new ResponseEntity<>("SUCCESSFUL", HttpStatus. OK);
      */
-    @DeleteMapping("/v2/")
+    @DeleteMapping("/v3/")
     public ResponseEntity<String> deleteEverything(@RequestHeader("username") String username, @RequestHeader("password") String password) {
         User user = new User(username, HashCalculator.getStringHash(password));
         if (!duchnetService.authentify(user)) {
