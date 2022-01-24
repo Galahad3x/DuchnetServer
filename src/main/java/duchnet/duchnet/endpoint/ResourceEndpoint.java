@@ -78,7 +78,7 @@ public class ResourceEndpoint {
                         }
                     }
                     if (!found && content.isPresent()) {
-                        XMLs.add(new DescriptionXML(content.get().hash, new LinkedList<>(Collections.singletonList(desc.getDescription()))));
+                        XMLs.add(new DescriptionXML(content.get().hash, content.get().getId(), new LinkedList<>(Collections.singletonList(desc.getDescription()))));
                     }
                 }
                 return new ResponseEntity<>(new XmlMapper().writeValueAsString(XMLs), HttpStatus.OK);
@@ -100,7 +100,7 @@ public class ResourceEndpoint {
                         }
                     }
                     if (!found && content.isPresent()) {
-                        fXMLs.add(new FilenameXML(content.get().hash, new LinkedList<>(Collections.singletonList(name.getFilename()))));
+                        fXMLs.add(new FilenameXML(content.get().hash, content.get().getId(), new LinkedList<>(Collections.singletonList(name.getFilename()))));
                     }
                 }
                 return new ResponseEntity<>(new XmlMapper().writeValueAsString(fXMLs), HttpStatus.OK);
@@ -122,7 +122,7 @@ public class ResourceEndpoint {
                         }
                     }
                     if (!found && content.isPresent()) {
-                        tXMLs.add(new TagXML(content.get().hash, new LinkedList<>(Collections.singletonList(tg.getTag()))));
+                        tXMLs.add(new TagXML(content.get().hash, content.get().getId(), new LinkedList<>(Collections.singletonList(tg.getTag()))));
                     }
                 }
                 return new ResponseEntity<>(new XmlMapper().writeValueAsString(tXMLs), HttpStatus.OK);

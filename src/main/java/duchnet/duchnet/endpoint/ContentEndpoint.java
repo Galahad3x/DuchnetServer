@@ -103,21 +103,21 @@ public class ContentEndpoint {
                     for (Description desc : descriptions) {
                         description.add(desc.getDescription());
                     }
-                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(new DescriptionXML(the_content.get().hash, description)), HttpStatus.OK);
+                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(new DescriptionXML(the_content.get().hash, the_content.get().getId(), description)), HttpStatus.OK);
                 case "filenames":
                     List<FileName> filenames = duchnetService.findAllFilenames(the_content.get().getId());
                     List<String> filename = new LinkedList<>();
                     for (FileName name : filenames) {
                         filename.add(name.getFilename());
                     }
-                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(new FilenameXML(the_content.get().hash, filename)), HttpStatus.OK);
+                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(new FilenameXML(the_content.get().hash, the_content.get().getId(), filename)), HttpStatus.OK);
                 case "tags":
                     List<Tag> tags = duchnetService.findAllTags(the_content.get().getId());
                     List<String> tag = new LinkedList<>();
                     for (Tag tg : tags) {
                         tag.add(tg.getTag());
                     }
-                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(new TagXML(the_content.get().hash, tag)), HttpStatus.OK);
+                    return new ResponseEntity<>(new XmlMapper().writeValueAsString(new TagXML(the_content.get().hash, the_content.get().getId(), tag)), HttpStatus.OK);
                 case "peers":
                     List<PeerInfo> peerInfos = duchnetService.findAllPeerInfos(hash);
                     List<String> pinfo = new LinkedList<>();
