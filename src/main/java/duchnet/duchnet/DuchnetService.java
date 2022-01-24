@@ -5,6 +5,7 @@ import duchnet.duchnet.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -83,6 +84,10 @@ public class DuchnetService {
         }
     }
 
+    public void saveFilename(FileName f){
+        filenameRepository.save(f);
+    }
+
     public void deleteAllFilenames() {
         filenameRepository.deleteAll();
     }
@@ -133,6 +138,10 @@ public class DuchnetService {
         }
     }
 
+    public void saveDescription(Description desc){
+        descriptionRepository.save(desc);
+    }
+
     public void deleteAllDescriptions() {
         descriptionRepository.deleteAll();
     }
@@ -181,6 +190,10 @@ public class DuchnetService {
             contentRepository.save(daContent);
             tagRepository.save(new Tag(daContent.getId(), tag, user.getId()));
         }
+    }
+
+    public void saveTag(Tag tag){
+        tagRepository.save(tag);
     }
 
     public void deleteAllTags() {

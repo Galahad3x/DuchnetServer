@@ -35,6 +35,10 @@ public class FileName {
         return filename;
     }
 
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public Long getId() {
         return id;
     }
