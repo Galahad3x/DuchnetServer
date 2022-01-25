@@ -216,19 +216,6 @@ public class ResourceEndpoint {
                     }
                 }
                 return new ResponseEntity<>(new XmlMapper().writeValueAsString("NOT FOUND"), HttpStatus.NOT_FOUND);
-            case "filenames":
-                Optional<FileName> fname = duchnetService.findFilenameById(id);
-                if (fname.isPresent()) {
-                    if (fname.get().owner_id.equals(user.getId())) {
-                        FileName f = fname.get();
-                        f.setFilename(body);
-                        duchnetService.saveFilename(f);
-                        return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
-                    } else {
-                        return new ResponseEntity<>("FORBIDDEN ACCESS", HttpStatus.FORBIDDEN);
-                    }
-                }
-                return new ResponseEntity<>(new XmlMapper().writeValueAsString("NOT FOUND"), HttpStatus.NOT_FOUND);
             case "tags":
                 Optional<Tag> tag = duchnetService.findTagById(id);
                 if (tag.isPresent()) {
@@ -271,17 +258,6 @@ public class ResourceEndpoint {
                 if (desc.isPresent()) {
                     if (desc.get().owner_id.equals(user.getId())) {
                         duchnetService.deleteDescriptionById(id);
-                        return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
-                    } else {
-                        return new ResponseEntity<>("FORBIDDEN ACCESS", HttpStatus.FORBIDDEN);
-                    }
-                }
-                return new ResponseEntity<>(new XmlMapper().writeValueAsString("NOT FOUND"), HttpStatus.NOT_FOUND);
-            case "filenames":
-                Optional<FileName> fname = duchnetService.findFilenameById(id);
-                if (fname.isPresent()) {
-                    if (fname.get().owner_id.equals(user.getId())) {
-                        duchnetService.deleteFilenameById(id);
                         return new ResponseEntity<>("SUCCESSFUL", HttpStatus.OK);
                     } else {
                         return new ResponseEntity<>("FORBIDDEN ACCESS", HttpStatus.FORBIDDEN);

@@ -222,7 +222,11 @@ public class DuchnetService {
         if (optional.isPresent()) {
             List<PeerInfo> peers = peerInfoRepository.findPeersByHash(optional.get().hash);
             for (PeerInfo peerInfo : peers) {
-                if (peerInfo.toString().equals(text) && peerInfo.owner_id.equals(user.getId())) {
+                try {
+                    if (peerInfo.toString().equals(text) && peerInfo.owner_id.equals(user.getId())) {
+                        return;
+                    }
+                } catch (NullPointerException e){
                     return;
                 }
             }
