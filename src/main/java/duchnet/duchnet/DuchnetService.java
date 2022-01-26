@@ -79,6 +79,7 @@ public class DuchnetService {
             filenameRepository.save(new FileName(optional.get().getId(), name, user.getId()));
         } else {
             Content daContent = new Content(hash);
+            daContent.owner_id = user.getId();
             contentRepository.save(daContent);
             filenameRepository.save(new FileName(daContent.getId(), name, user.getId()));
         }
@@ -133,6 +134,7 @@ public class DuchnetService {
             descriptionRepository.save(new Description(optional.get().getId(), description, user.getId()));
         } else {
             Content daContent = new Content(hash);
+            daContent.owner_id = user.getId();
             contentRepository.save(daContent);
             descriptionRepository.save(new Description(daContent.getId(), description, user.getId()));
         }
@@ -187,6 +189,7 @@ public class DuchnetService {
             tagRepository.save(new Tag(optional.get().getId(), tag, user.getId()));
         } else {
             Content daContent = new Content(hash);
+            daContent.owner_id = user.getId();
             contentRepository.save(daContent);
             tagRepository.save(new Tag(daContent.getId(), tag, user.getId()));
         }
@@ -236,6 +239,7 @@ public class DuchnetService {
             peerInfoRepository.save(p);
         } else {
             Content daContent = new Content(hash);
+            daContent.owner_id = user.getId();
             contentRepository.save(daContent);
             PeerInfo p = PeerInfo.fromString(text);
             p.setHash(hash);
